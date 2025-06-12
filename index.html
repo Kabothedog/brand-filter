@@ -104,12 +104,10 @@
       canvas.width = imageSource.videoWidth || imageSource.width;
       canvas.height = imageSource.videoHeight || imageSource.height;
 
-      // Apply blur using filter + Safari fallback
+      // Apply blur first
       ctx.filter = `blur(${blurRadius}px)`;
-      ctx.webkitFilter = `blur(${blurRadius}px)`; // Safari fallback
       ctx.drawImage(imageSource, 0, 0, canvas.width, canvas.height);
       ctx.filter = "none";
-      ctx.webkitFilter = "none";
 
       let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
@@ -151,7 +149,6 @@
       useCamera = true;
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       video.srcObject = stream;
-      await video.play(); // Helps Safari trigger metadata
 
       video.addEventListener("loadedmetadata", () => {
         function render() {
